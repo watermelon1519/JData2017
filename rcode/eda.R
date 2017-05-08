@@ -7,7 +7,7 @@ library(dplyr)
 
 # clear memory
 clear_memory <- function(x=c()) {
-  if (length(x) == 0) {
+    if (length(x) == 0) {
     gc()
   } else if (length(x) == 1 & x[1] == 1) {
     rm(list = ls())
@@ -32,20 +32,20 @@ fpath_list <- c('./JData_Action_0301_0315.csv', './JData_Action_0316_0331.csv', 
 
 # 处理行为数据
 action_processor <- function(fpath) {
+
+    # read data
+    action <- fread(fpath)
+    cat("There are ", nrow(action), " rows in the original df.\n")
   
-  # read data
-  action <- fread(fpath)
-  cat("There are ", nrow(action), " rows in the original df.\n")
+    # remove duplicated rows
+    # 暂时忽略model_id
+    cat("Remove duplicated rows.\n")
+    action <- action[!duplicated(action, by=c('user_id', 'sku_id', 'time', 'type')), ]
+    cat("There are ", nrow(action), " rows left.\n")
   
-  # remove duplicated rows
-  # 暂时忽略model_id
-  cat("Remove duplicated rows.\n")
-  action <- action[!duplicated(action, by=c('user_id', 'sku_id', 'time', 'type')), ]
-  cat("There are ", nrow(action), " rows left.\n")
+    # print(table(action$cate))
   
-  # print(table(action$cate))
-  
-  return(action)
+    return(action)
   
 }
 
@@ -69,9 +69,3 @@ action_all <- action_all[!duplicated(action_all), ]
 
 # 保存数据
 save(action_all, file='action_all.RData')
-
-
-
-
-
-
