@@ -20,15 +20,15 @@ clear_memory <- function(x=c()) {
 
 clear_memory(1)
 
-product <- fread('./JData_Product.csv')
-user <- fread('./JData_User.csv', na.strings='NULL')
-comment <- fread('./JData_Comment.csv')
+# product <- fread('./JData_Product.csv')
+# user <- fread('./JData_User.csv', na.strings='NULL')
+# comment <- fread('./JData_Comment.csv')
 
 fpath1 <- './JData_Action_0301_0315.csv'
 fpath2 <- './JData_Action_0316_0331.csv'
 fpath3 <- './JData_Action_0401_0415.csv'
 
-fpath_list <- c('./JData_Action_0301_0315.csv', './JData_Action_0316_0331.csv', './JData_Action_0401_0415.csv')
+# fpath_list <- c('./JData_Action_0301_0315.csv', './JData_Action_0316_0331.csv', './JData_Action_0401_0415.csv')
 
 # 处理行为数据
 action_processor <- function(fpath) {
