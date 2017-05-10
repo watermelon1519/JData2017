@@ -2,9 +2,9 @@ library(data.table)
 library(dplyr)
 library(xgboost)
 
-offline_train <- fread('../data/offline_train_20170509175021.txt')
-offline_prediction_x <- fread('../data/offline_prediction_x_20170509175101.txt')
-offline_verify <- fread('../data/offline_verify_20170509175141.txt')
+offline_train <- fread('../data/offline_train_20170510090241.txt')
+offline_prediction_x <- fread('../data/offline_prediction_20170510090531.txt')
+offline_verify <- fread('../data/offline_verify_20170510090601.txt')
 
 label <- offline_train$label
 user_id <- offline_train$user_id
@@ -12,6 +12,7 @@ user_id <- offline_train$user_id
 offline_train$user_id <- NULL
 offline_train$sku_id <- NULL
 offline_train$label <- NULL
+offline_train$stat_day_cnt <- NULL
 
 # 构建均衡训练集
 train_sample_true <- which(label == 1)
@@ -34,19 +35,20 @@ train.xgboost.cv <- xgb.cv(data = dtrain_balanced, params=params, nrounds=200, n
 train.xgboost.balanced <- xgb.train(data=dtrain_balanced, params=params, nrounds=1000)
 
 # # 训练误差分析
-# dtrain <- xgb.DMatrix(data = as.matrix(1.0*offline_train), label=label)
-# model <- train.xgboost.balanced
-# pred <- predict(model, dtrain)
-# tmp <- data.frame(label, pred)
-# tmp <- tmp %>% arrange(desc(pred))
-# 
-# precision <- sum(tmp$label[1:12000]) / 12000
-# recall <- sum(tmp$label[1:12000]) / sum(tmp$label)
-# f11 <- 6*recall*precision / (5*recall + precision)
+dtrain <- xgb.DMatrix(data = as.matrix(1.0*offline_train), label=label)
+model <- train.xgboost.balanced
+pred <- predict(model, dtrain)
+tmp <- data.frame(label, pred)
+tmp <- tmp %>% arrange(desc(pred))
+
+precision <- sum(tmp$label[1:12000]) / 12000
+recall <- sum(tmp$label[1:12000]) / sum(tmp$label)
+f11 <- 6*recall*precision / (5*recall + precision)
 
 # 离线验证
 verify_user_id <- offline_prediction_x$user_id
 offline_prediction_x$user_id <- NULL
+offline_prediction_x$stat_day_cnt <- NULL
 dtest <- xgb.DMatrix(data=as.matrix(1.0*offline_prediction_x))
 pred <- predict(model, dtest)
 
