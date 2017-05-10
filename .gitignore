@@ -4,3 +4,4 @@ ipc_inv_opt.iml
 src/com/jd/pbs/simulation/config.py
 out/
 .DS_Store
+.Rhistory
