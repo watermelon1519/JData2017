@@ -5,3 +5,4 @@ src/com/jd/pbs/simulation/config.py
 out/
 .DS_Store
 .Rhistory
+data/
