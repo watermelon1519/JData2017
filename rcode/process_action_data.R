@@ -21,15 +21,9 @@ clear_memory <- function(x=c()) {
 
 clear_memory(1)
 
-# product <- fread('./JData_Product.csv')
-# user <- fread('./JData_User.csv', na.strings='NULL')
-# comment <- fread('./JData_Comment.csv')
-
-fpath1 <- './JData_Action_0301_0315.csv'
-fpath2 <- './JData_Action_0316_0331.csv'
-fpath3 <- './JData_Action_0401_0415.csv'
-
-# fpath_list <- c('./JData_Action_0301_0315.csv', './JData_Action_0316_0331.csv', './JData_Action_0401_0415.csv')
+fpath1 <- 'E:/JData2017/JData_Action_0301_0315.csv'
+fpath2 <- 'E:/JData2017/JData_Action_0316_0331.csv'
+fpath3 <- 'E:/JData2017/JData_Action_0401_0415.csv'
 
 # 处理行为数据
 action_processor <- function(fpath) {
@@ -44,7 +38,7 @@ action_processor <- function(fpath) {
     action <- action[!duplicated(action, by=c('user_id', 'sku_id', 'time', 'type')), ]
     cat("There are ", nrow(action), " rows left.\n")
   
-    # print(table(action$cate))
+    action$dt <- substring(action$time, 1, 10)
   
     return(action)
   
@@ -69,4 +63,4 @@ clear_memory(c('action3'))
 action_all <- action_all[!duplicated(action_all), ]
 
 # 保存数据
-save(action_all, file='action_all.RData')
+save(action_all, file='E:/JData2017/action_all.RData')
