@@ -21,9 +21,13 @@ clear_memory <- function(x=c()) {
 
 clear_memory(1)
 
-fpath1 <- 'E:/JData2017/JData_Action_0301_0315.csv'
-fpath2 <- 'E:/JData2017/JData_Action_0316_0331.csv'
-fpath3 <- 'E:/JData2017/JData_Action_0401_0415.csv'
+# fpath1 <- 'E:/JData2017/JData_Action_0301_0315.csv'
+# fpath2 <- 'E:/JData2017/JData_Action_0316_0331.csv'
+# fpath3 <- 'E:/JData2017/JData_Action_0401_0415.csv'
+
+fpath1 <- '~/JData2017/JData_Action_0301_0315.csv'
+fpath2 <- '~/JData2017/JData_Action_0316_0331.csv'
+fpath3 <- '~/JData2017/JData_Action_0401_0415.csv'
 
 # 处理行为数据
 action_processor <- function(fpath) {
@@ -63,4 +67,5 @@ clear_memory(c('action3'))
 action_all <- action_all[!duplicated(action_all), ]
 
 # 保存数据
-save(action_all, file='E:/JData2017/action_all.RData')
+# save(action_all, file='E:/JData2017/action_all.RData')
+save(action_all, file='~/JData2017/action_all.RData')

@@ -7,13 +7,13 @@ library(reshape2)
 # 训练标记：该用户2016-04-09到2016-04-13是否下单P中的商品
 # 训练标记：该用户2016-04-02到2016-04-16是否下单P中的商品
 
-# load('~/JData2017/action_all.RData')
-# product <- fread('~/JData2017/JData_Product.csv')
-# user <- fread('~/JData2017/JData_User.csv', na.strings=c('NULL'), encoding='UTF-8')
+load('~/JData2017/action_all.RData')
+product <- fread('~/JData2017/JData_Product.csv')
+user <- fread('~/JData2017/JData_User.csv', na.strings=c('NULL'))
 
-load('E:/JData2017/action_all.RData')
-product <- fread('E:/JData2017/JData_Product.csv')
-user <- fread('E:/JData2017/JData_User.csv', na.strings=c('NULL'))
+# load('E:/JData2017/action_all.RData')
+# product <- fread('E:/JData2017/JData_Product.csv')
+# user <- fread('E:/JData2017/JData_User.csv', na.strings=c('NULL'))
 
 # action表中的用户数，232741
 user_action <- unique(action_all$user_id)
@@ -52,6 +52,15 @@ case_study <- function() {
     tmp <- action_all %>% filter(user_id == a & dt <= b) %>% arrange(time) 
     return(tmp)
 }
+
+#######################################################################################################################################
+
+# 提取购买过cate6的日志记录
+cate6_buy_user_record <- action_all %>% filter(user_id %in% cate6_buy_record$user_id)
+
+tmp <- cate6_buy_user_record %>% group_by(cate, brand) %>% summarise(user_cnt=length(unique(user_id))) %>% arrange(desc(user_cnt))
+
+tmp_control <- action_all %>% group_by(cate, brand) %>% summarise(user_cnt=length(unique(user_id))) %>% arrange(desc(user_cnt))
 
 
 
