@@ -2,8 +2,8 @@ library(data.table)
 library(dplyr)
 library(xgboost)
 
-online_train <- fread('../data/online_train_20170511160541.txt', na.strings = c('NULL'))
-online_prediction_x <- fread('../data/online_prediction_20170511160551.txt')
+online_train <- fread('../data/online_train_20170512085041.txt', na.strings = c('NULL'))
+online_prediction_x <- fread('../data/online_prediction_20170512085121.txt')
 
 # 补充特征
 supp <- fread('../data/dev_ftp_user_feacture_zhjs_01_20170511134601.csv', na.strings = c('NULL'))
@@ -40,13 +40,13 @@ recall <- function(preds, dtrain) {
 }
 
 # 设置参数
-# params <- list(objective="binary:logistic", nthread=5, max_depth=8, eta=0.02, subsample=0.8)
-params <- list(objective="binary:logistic", nthread=5, max_depth=8, eta=0.02, subsample=0.667)
+params <- list(objective="binary:logistic", nthread=5, max_depth=8, eta=0.02, subsample=0.8)
+# params <- list(objective="binary:logistic", nthread=5, max_depth=8, eta=0.02, subsample=0.667)
 # params <- list(objective="binary:logistic", nthread=5, max_depth=8, eta=0.02, subsample=0.8)
 
 # # 交叉验证
 # train.xgboost.cv <- xgb.cv(data = dtrain_balanced, params=params, nrounds=400, nfold=5, feval=recall)
-# train.xgboost.cv <- xgb.cv(data = dtrain_balanced, params=params, nrounds=400, nfold=5)
+train.xgboost.cv <- xgb.cv(data = dtrain_balanced, params=params, nrounds=400, nfold=5)
 
 # 训练模型（均衡样本）
 train.xgboost.balanced <- xgb.train(data=dtrain_balanced, params=params, nrounds=1000)
